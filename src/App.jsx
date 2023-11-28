@@ -7,6 +7,7 @@ import { useState } from 'react';
 const getRandomValue = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const kortti = (index) => ({
+    id: crypto.randomUUID(),
     image: 'http://placekitten.com/120/100?image=' + index,
     ominaisuudet: [
         {name: 'cuteness', value: getRandomValue(3, 20)},
@@ -24,8 +25,10 @@ const puolivali = Math.ceil(korttipakka.length / 2);
 
 // jaetaan kortit pelaajalle ja vastustajalle
 function jaaKortit() {
-    player: korttipakka.slice(0, puolivali);
-    opponent: korttipakka.slice(puolivali)
+    return {
+        player: korttipakka.slice(0, puolivali),
+        opponent: korttipakka.slice(puolivali)
+    }
 }
 
 export default function App(){
@@ -62,7 +65,13 @@ export default function App(){
 
                 <div>
                     <p> Pelaajan kortit </p>
-                    <Card card={kortit.player[0]}/>
+                    <ul>
+                    {kortit.player.map((kortti) =>
+                        <li key={kortti.id}> 
+                            <Card card={kortti}/>
+                        </li>
+                    )}
+                    </ul>
                 </div>
 
                 <p> { result } </p>
@@ -70,7 +79,13 @@ export default function App(){
                 
                 <div>
                     <p> Vastustajan kortit </p>
-                    <Card card={kortit.opponent[0]}/>
+                    <ul>
+                    {kortit.opponent.map((kortti) =>
+                        <li key={kortti.id}> 
+                            <Card card={kortti}/>
+                        </li>
+                    )}
+                    </ul>
                 </div>
 
             </div>
